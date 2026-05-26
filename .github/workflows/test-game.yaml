@@ -1,4 +1,4 @@
-name: test-game
+name: Test game module
 
 on:
   push:

@@ -72,11 +72,11 @@ For your convenience:
 
    import heapq
    from typing import Dict, List, Tuple, Optional
-   from game.common.enums import ActionType, ObjectType
-   from game.common.game_object import GameObject
-   from game.common.map.occupiable import Occupiable
-   from game.constants import DIRECTION_TO_MOVE
-   from game.utils.vector import Vector
+   from bytele.game.common.enums import ActionType, ObjectType
+   from bytele.game.common.game_object import GameObject
+   from bytele.game.common.map.occupiable import Occupiable
+   from bytele.game.constants import DIRECTION_TO_MOVE
+   from bytele.game.utils.vector import Vector
 
    Position = Tuple[int, int]
 

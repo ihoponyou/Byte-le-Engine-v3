@@ -36,7 +36,7 @@ Alternatively, you can use Python's `Interactive Mode <https://docs.python.org/3
 .. code-block:: python
 
    python
-   >>> from game.common.enums import *
+   >>> from bytele.game.common.enums import *
    >>> ObjectType(<number>)
 
 .. note::

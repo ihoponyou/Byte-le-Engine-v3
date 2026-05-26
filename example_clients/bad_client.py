@@ -1,8 +1,8 @@
-from game.client.user_client import UserClient
-from game.common.avatar import Avatar
-from game.common.enums import *
-from game.common.map.game_board import GameBoard
-from game.constants import *
+from bytele.game.client.user_client import UserClient
+from bytele.game.common.avatar import Avatar
+from bytele.game.common.enums import *
+from bytele.game.common.map.game_board import GameBoard
+from bytele.game.constants import *
 
 class Client(UserClient):
 

@@ -1,7 +1,7 @@
 # Byte Engine
 
 Revamped base game engine for use in NDACM Byte-le Royale games.
-Changes made in 2023.
+Changes made in 2026.
 
 ## Important Changes
 
@@ -53,7 +53,7 @@ Changes made in 2023.
 
 
 * Occupiable Class
-  * A new class was implemented called Occupiable. This class inherits from GameObject and 
+  * A new class was implemented called Occupiable. This class inherits from bytele.gameObject and 
   allows for other GameObjects to "stack" on top of one another. As long as an object inherits 
   this class, it can allow for many objects to be located on the same Tile.
 
@@ -295,41 +295,54 @@ ENTITY_LOAD_PRIORITY: dict[str, int] = {
   what's discussed.
 
 
+## Requirements
+
+- Python 3.13 for the [warnings.deprecated() decorator](https://docs.python.org/3/library/warnings.html#warnings.deprecated)
 
 ## How to run
 
-### Windows
+Ensure you have first [created and activated a virtual environment](https://docs.python.org/3/library/venv.html#creating-virtual-environments). Then run
+
 ```bash
-.\build.bat # will compile your code
-
-python .\launcher.pyz g # will generate a map 
-
-python .\launcher.pyz r # will run the game
+pip install --editable .[dev,docs]
 ```
 
-### Linux
+Note that you can use `-e` instead of `--editable`. If the above fails and you are using zsh, try adding double quotes (") like so:
+
 ```bash
-./build.sh # will compile your code
-
-python launcher.pyz g # will generate a map 
-
-python launcher.pyz r # will run the game
+pip install -e ".[dev,docs]"
 ```
 
-Note: if running the launcher throws a ModuleNotFoundError, make sure your Python virtual environment is activated via:
+## Using the CLI
+
+Once you have installed the "bytele" package (via the above commands or from PyPI), you can use `bytele` like any other shell command. For example, run `bytele -h`.
+
+## Useful Developer Commands:
+
+Run all tests:
+
 ```bash
-# in the root directory
-source .venv/bin/activate
+pytest
 ```
 
-## Required Python Version
+Note: If "pytest" is an unknown command, ensure you have activated your virtual environment and installed the dev dependencies.
 
-- Requires Python 3.11 due to type of Self
-
-## Test Suite Commands:
+Run only game tests
 
 ```bash
-python -m game.test_suite.runner
+pytest tests/game/
+```
+
+Run only server tests
+
+```bash
+pytest tests/server/
+```
+
+Run a type checker (requires that [Hatch](https://hatch.pypa.io/latest/) is installed)
+
+```bash
+hatch run types:check
 ```
 
 ## Manual
@@ -355,3 +368,5 @@ Referenced Examples - https://github.com/topoftheyear/Byte-le-Game-Examples
 2024 - Quarry Rush - https://github.com/acm-ndsu/Byte-le-2024
 
 2025 - Commander Clash - https://github.com/acm-ndsu/Byte-le-2025
+
+2026 - Five Nights at the ACM - https://github.com/acm-ndsu/Byte-le-Engine-v2-2026

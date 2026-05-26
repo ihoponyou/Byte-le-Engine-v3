@@ -1,5 +1,5 @@
-from game.client.user_client import UserClient
-from game.common.enums import ObjectType, ActionType, BOT_OBJECT_TYPES
+from bytele.game.client.user_client import UserClient
+from bytele.game.common.enums import ObjectType, ActionType, BOT_OBJECT_TYPES
 
 
 class Client(UserClient):

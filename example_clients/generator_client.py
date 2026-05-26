@@ -1,12 +1,12 @@
 import random
 
-from game.client.user_client import UserClient
-from game.common.avatar import Avatar
-from game.common.enums import ObjectType, ActionType
-from game.common.map.game_board import GameBoard
-from game.common.map.occupiable import Occupiable
-from game.utils.vector import Vector
-from game.constants import *
+from bytele.game.client.user_client import UserClient
+from bytele.game.common.avatar import Avatar
+from bytele.game.common.enums import ObjectType, ActionType
+from bytele.game.common.map.game_board import GameBoard
+from bytele.game.common.map.occupiable import Occupiable
+from bytele.game.utils.vector import Vector
+from bytele.game.constants import *
 
 class Client(UserClient):
 
