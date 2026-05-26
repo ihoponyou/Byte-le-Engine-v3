@@ -6,7 +6,7 @@ from bytele.game.common.map.wall import Wall
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.items.item import Item
 from bytele.game.common.enums import ObjectType
-import bytele.game.test_suite.utils
+from . import utils
 
 
 class TestOccupiableStation(unittest.TestCase):
@@ -24,7 +24,6 @@ class TestOccupiableStation(unittest.TestCase):
         self.station: Station = Station()
         self.avatar: Avatar = Avatar()
         self.item: Item = Item()
-        self.utils = game.test_suite.utils
 
     # test adding item to occupiable_station
     def test_item_occ(self):

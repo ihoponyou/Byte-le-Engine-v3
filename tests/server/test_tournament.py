@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from bytele.server.unit_tests.conftest import EXPECTED_TOURNAMENT
+from .conftest import EXPECTED_TOURNAMENT
 
 
 # Test Submission methods in main.py

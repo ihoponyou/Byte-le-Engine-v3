@@ -11,7 +11,7 @@ from bytele.game.controllers.movement_controller import MovementController
 from bytele.game.utils.vector import Vector
 from bytele.game.common.game_object import GameObject
 from bytele.game.common.map.game_board import GameBoard
-from bytele.game.test_suite.utils import spell_check
+from .utils import spell_check
 
 
 class TestGameBoard(unittest.TestCase):

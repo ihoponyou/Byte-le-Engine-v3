@@ -2,7 +2,7 @@ import unittest
 from bytele.game.common.player import Player
 from bytele.game.common.enums import *
 from bytele.game.common.avatar import Avatar
-import bytele.game.test_suite.utils
+from . import utils
 
 class TestPlayer(unittest.TestCase):
     """
@@ -18,7 +18,7 @@ class TestPlayer(unittest.TestCase):
         self.actions: list[ActionType] = []
         self.team_name: str | None = ""
         self.avatar: Avatar | None = Avatar()
-        self.utils = game.test_suite.utils
+
     # test action
     def test_actions(self):
         # accepts a list of ActionType
@@ -36,7 +36,7 @@ class TestPlayer(unittest.TestCase):
         value: list = None
         with self.assertRaises(ValueError) as e:
             self.player.actions = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.action must be an empty list or a list '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.action must be an empty list or a list '
                                            f'of action types.'
                                            f' It is a(n) {value.__class__.__name__} and has the value of {value}.'
                                                , False))
@@ -46,7 +46,7 @@ class TestPlayer(unittest.TestCase):
             with self.assertRaises(ValueError) as e:
                 self.player.actions = value
 
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.action must be an empty list or a list '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.action must be an empty list or a list '
                                            f'of action types. It is a(n) {value.__class__.__name__} and has the value '
                                            f'of {value}.', False))
 
@@ -66,7 +66,7 @@ class TestPlayer(unittest.TestCase):
         value: str = 'Strig'
         with self.assertRaises(ValueError) as e:
             self.player.functional = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.functional must be a boolean.'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.functional must be a boolean.'
                                            f' It is a(n) {value.__class__.__name__} and has the value of {value}.'
                                                , False))
 
@@ -87,7 +87,7 @@ class TestPlayer(unittest.TestCase):
         value: int = 1
         with self.assertRaises(ValueError) as e:
             self.player.team_name = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.team_name must be a String or None.'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.team_name must be a String or None.'
                                            f' It is a(n) {value.__class__.__name__} and has the value of {value}.'
                                                , False))
 
@@ -105,7 +105,7 @@ class TestPlayer(unittest.TestCase):
         value: int = 10
         with self.assertRaises(ValueError) as e:
             self.player.avatar = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.avatar must be Avatar or None. It is a(n)'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.avatar must be Avatar or None. It is a(n)'
                                                                  f' {value.__class__.__name__} and has the value of '
                                                                  f'{value}.', False))
 
@@ -120,7 +120,7 @@ class TestPlayer(unittest.TestCase):
         value: ObjectType = None
         with self.assertRaises(ValueError) as e:
             self.player.object_type = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.object_type must be ObjectType. It is '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.object_type must be ObjectType. It is '
                                                                  f'a(n) {value.__class__.__name__} and has the value '
                                                                  f'of {value}.', False))
 
@@ -128,7 +128,7 @@ class TestPlayer(unittest.TestCase):
         value: int = 10
         with self.assertRaises(ValueError) as e:
             self.player.object_type = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Player.object_type must be ObjectType. It is '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Player.object_type must be ObjectType. It is '
                                                                  f'a(n) {value.__class__.__name__} and has the value '
                                                                  f'of {value}.', False))
 

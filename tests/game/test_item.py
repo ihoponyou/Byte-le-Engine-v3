@@ -3,7 +3,7 @@ import unittest
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.items.item import Item
 from bytele.game.common.enums import ObjectType
-import bytele.game.test_suite.utils
+from . import utils
 
 
 class TestItem(unittest.TestCase):
@@ -16,7 +16,6 @@ class TestItem(unittest.TestCase):
     def setUp(self) -> None:
         self.avatar: Avatar = Avatar(None, 1)
         self.item: Item = Item()
-        self.utils = game.test_suite.utils
 
     # test set durability
     def test_set_durability(self):
@@ -31,7 +30,7 @@ class TestItem(unittest.TestCase):
         value: str = 'fail'
         with self.assertRaises(ValueError) as e:
             self.item.durability = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.durability must be an int. It is a(n) '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.durability must be an int. It is a(n) '
                                                                  f'{value.__class__.__name__} with the value of '
                                                                  f'{value}.', False))
 
@@ -41,7 +40,7 @@ class TestItem(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             self.item = value
             self.item.durability = value2
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.durability must be set to None if stack_size'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.durability must be set to None if stack_size'
                                                                  f' is not equal to 1.'
                                                                  f' {value.__class__.__name__}.'
                                                                  f'durability has the value of {value2}.', False))
@@ -55,7 +54,7 @@ class TestItem(unittest.TestCase):
         value: str = 'fail'
         with self.assertRaises(ValueError) as e:
             self.item.value = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.value must be an int.'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.value must be an int.'
                                                                  f' It is a(n) {value.__class__.__name__} with the value of {value}.'
                                                , False))
 
@@ -69,7 +68,7 @@ class TestItem(unittest.TestCase):
         value: str = 'fail'
         with self.assertRaises(ValueError) as e:
             self.item.quantity = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.quantity must be an int.'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.quantity must be an int.'
                                                                  f' It is a(n) {value.__class__.__name__} with the value'
                                                                  f' of {value}.', False))
 
@@ -77,7 +76,7 @@ class TestItem(unittest.TestCase):
         value: Item = -1
         with self.assertRaises(ValueError) as e:
             self.item.quantity = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.quantity must be greater than or '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.quantity must be greater than or '
                                                                  f'equal to 0. {self.item.__class__.__name__}.quantity '
                                                                  f'has the value of {value}.', False))
 
@@ -87,7 +86,7 @@ class TestItem(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             self.item.quantity = value
             self.item.stack_size = value2
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.quantity cannot be greater than '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.quantity cannot be greater than '
                                                                  f'{self.item.__class__.__name__}.stack_size. '
                                                                  f'{self.item.__class__.__name__}.quantity has '
                                                                  f'the value of {value}.', False))
@@ -100,7 +99,7 @@ class TestItem(unittest.TestCase):
         value: str = 'fail'
         with self.assertRaises(ValueError) as e:
             self.item.stack_size = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.stack_size must be an int.'
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.stack_size must be an int.'
                                                                  f' It is a(n) {value.__class__.__name__} with the value'
                                                                  f' of {value}.',False))
 
@@ -110,7 +109,7 @@ class TestItem(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             item: Item = Item(10, None, 10, 10)
             item.stack_size = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Item.stack_size must be greater than or equal '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Item.stack_size must be greater than or equal '
                                                                  f'to the quantity. '
                                                                  f'{self.item.__class__.__name__}.stack_size has the '
                                                                  f'value of {value}.', False))

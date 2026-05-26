@@ -1,65 +1,51 @@
 import unittest
 
+from bytele.game.common.map.game_board import GameBoard
+from bytele.game.controllers.movement_controller import MovementController
+from bytele.game.common.stations.station import Station
+from bytele.game.common.stations.occupiable_station import OccupiableStation
+from bytele.game.common.map.wall import Wall
+from bytele.game.utils.vector import Vector
+from bytele.game.common.player import Player
 from bytele.game.common.action import ActionType
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.game_object import GameObject
-from bytele.game.common.map.game_board import GameBoard
-from bytele.game.common.map.wall import Wall
-from bytele.game.common.player import Player
-from bytele.game.common.stations.occupiable_station import OccupiableStation
-from bytele.game.controllers.movement_controller import MovementController
-from bytele.game.utils.vector import Vector
-import bytele.game.test_suite.utils
 
-class TestMovementControllerIfOccupiableStations(unittest.TestCase):
+class TestMovementControllerIfWall(unittest.TestCase):
     """
-    `Test Movement Controller with Occupiable Stations that are Occupied Notes:`
+    `Test Movement Controller with Stations Notes:`
 
-        This class tests the different methods in the Movement Controller and that the Avatar can't move onto an
-        Occupiable Station that is occupied by an unoccupiable object (e.g., a Wall or Station object).
+        This class tests the different methods in the Movement Controller and that the Avatar can't pass Wall objects.
     """
 
     def setUp(self) -> None:
         self.movement_controller = MovementController()
+        self.avatar = Avatar(Vector(2, 2), 1)
 
-        self.avatar = Avatar(None, 10)
-
-        self.locations: dict[Vector, list[GameObject]] = { 
-            Vector(1, 0): [OccupiableStation(None), Wall()],
-            Vector(2, 0): [OccupiableStation(None), Wall()],
-            Vector(0, 1): [OccupiableStation(None), Wall()],
-            Vector(0, 2): [OccupiableStation(None), Wall()],
-            Vector(1, 3): [OccupiableStation(None), Wall()],
-            Vector(2, 3): [OccupiableStation(None), Wall()],
-            Vector(3, 1): [OccupiableStation(None), Wall()],
-            Vector(3, 0): [OccupiableStation(None), Wall()],
+        self.locations: dict[Vector: list[GameObject]] = {
             Vector(2, 2): [self.avatar]
         }
 
-        self.game_board = GameBoard(0, Vector(4, 4), self.locations, False)
-        self.occ_station = OccupiableStation()
-        # self.wall = Wall()
-        # test movements up, down, left and right by starting with default 4, 4 then know if it changes from there \/
-
-        self.position = Vector(2, 2)
+        self.game_board = GameBoard(0, Vector(4, 4), self.locations, True)
+        self.station = Station()
+        self.occupiable_station = OccupiableStation()
+        self.wall = Wall()
         self.client = Player(None, None, [], self.avatar)
         self.game_board.generate_map()
-        self.utils = game.test_suite.utils
-    # it is not occupied, so you can move there
 
     def test_move_up(self):
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
-        self.assertEqual(self.client.avatar.position, Vector(2, 1))
+        self.assertEqual(str(self.client.avatar.position), str(Vector(2, 1)))
 
     def test_move_up_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
-        self.assertEqual(self.client.avatar.position, Vector(2, 1))
+        self.assertEqual(str(self.client.avatar.position), str(Vector(2, 1)))
 
     def test_move_down(self):
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
         self.movement_controller.handle_actions(ActionType.MOVE_DOWN, self.client, self.game_board)
-        self.assertEqual(self.client.avatar.position, Vector(2, 2))
+        self.assertEqual(str(self.client.avatar.position), str(Vector(2, 2)))
 
     def test_move_down_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_DOWN, self.client, self.game_board)
@@ -81,5 +67,4 @@ class TestMovementControllerIfOccupiableStations(unittest.TestCase):
 
     def test_move_right_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_RIGHT, self.client, self.game_board)
-        self.movement_controller.handle_actions(ActionType.MOVE_RIGHT, self.client, self.game_board)
-        self.assertEqual(self.client.avatar.position, Vector(3, 2))
+        self.assertEqual(self.client.avatar.position, Vector(2, 2))

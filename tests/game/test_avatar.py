@@ -3,7 +3,7 @@ import unittest
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.items.item import Item
 from bytele.game.utils.vector import Vector
-import bytele.game.test_suite.utils
+from . import utils
 
 
 class TestAvatar(unittest.TestCase):
@@ -16,7 +16,6 @@ class TestAvatar(unittest.TestCase):
     def setUp(self) -> None:
         self.avatar: Avatar = Avatar(None, 1)
         self.item: Item = Item(10, 100, 1, 1)
-        self.utils = game.test_suite.utils
 
     # test set item
     def test_avatar_set_item(self):
@@ -27,7 +26,7 @@ class TestAvatar(unittest.TestCase):
         value: int = 3
         with self.assertRaises(ValueError) as e:
             self.avatar.held_item = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Avatar.held_item must be an Item or None. It '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Avatar.held_item must be an Item or None. It '
                                                                  f'is a(n) {value.__class__.__name__} and has the '
                                                                  f'value of {value}', False))
 
@@ -40,7 +39,7 @@ class TestAvatar(unittest.TestCase):
         value: str = 'wow'
         with self.assertRaises(ValueError) as e:
             self.avatar.score = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Avatar.score must be an int. It is a(n) '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Avatar.score must be an int. It is a(n) '
                                            f'{value.__class__.__name__} and has the value of {value}', False))
 
     # test set position
@@ -56,7 +55,7 @@ class TestAvatar(unittest.TestCase):
         value: int = 10
         with self.assertRaises(ValueError) as e:
             self.avatar.position = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'Avatar.position must be a Vector or None. '
+        self.assertTrue(utils.spell_check(str(e.exception), f'Avatar.position must be a Vector or None. '
                                            f'It is a(n) {value.__class__.__name__} and has the value of {value}', False))
 
     # test json method
@@ -92,7 +91,7 @@ class TestAvatar(unittest.TestCase):
         with self.assertRaises(TypeError) as error:
             self.avatar.power = value
         # self.assertTrue('must be an int' in str(error.exception))
-        self.assertTrue(self.utils.spell_check(str(error.exception),
+        self.assertTrue(utils.spell_check(str(error.exception),
                                                f'{self.avatar.__class__.__name__}.score must be an int '
                                                f'It is a(n) {value.__class__.__name__} and has the value of {value}',
                                                True))
@@ -102,6 +101,6 @@ class TestAvatar(unittest.TestCase):
         with self.assertRaises(ValueError) as error:
             self.avatar.power = value
         # self.assertTrue('nonnegative' in str(error.exception))
-        self.assertTrue(self.utils.spell_check(str(error.exception),
+        self.assertTrue(utils.spell_check(str(error.exception),
                                                f'{self.avatar.__class__.__name__}.power must be nonnegative; attempted to set it to {value}',
                                                True))

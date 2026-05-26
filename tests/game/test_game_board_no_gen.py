@@ -9,7 +9,7 @@ from bytele.game.common.map.wall import Wall
 from bytele.game.utils.vector import Vector
 from bytele.game.common.game_object import GameObject
 from bytele.game.common.map.game_board import GameBoard
-import bytele.game.test_suite.utils
+from . import utils
 
 
 class TestGameBoard(unittest.TestCase):
@@ -36,7 +36,6 @@ class TestGameBoard(unittest.TestCase):
             Vector(5, 6): [self.wall]
         }
         self.game_board: GameBoard = GameBoard(1, Vector(10, 10), self.locations, False)
-        self.utils = game.test_suite.utils
 
     # test seed
     def test_seed(self):
@@ -47,7 +46,7 @@ class TestGameBoard(unittest.TestCase):
         value: str = 'False'
         with self.assertRaises(ValueError) as e:
             self.game_board.seed = value
-        self.assertTrue(self.utils.spell_check(str(e.exception),
+        self.assertTrue(utils.spell_check(str(e.exception),
                                                f'GameBoard.seed must be an int. '
                                                f'It is a(n) {value.__class__.__name__} with the value of {value}.',
                                                False))
@@ -61,7 +60,7 @@ class TestGameBoard(unittest.TestCase):
         value: str = 'wow'
         with self.assertRaises(ValueError) as e:
             self.game_board.map_size = value
-        self.assertTrue(self.utils.spell_check(str(e.exception),
+        self.assertTrue(utils.spell_check(str(e.exception),
                                                f'GameBoard.map_size must be a Vector. '
                                                f'It is a(n) {value.__class__.__name__} with the value of {value}.',
                                                False))
@@ -81,7 +80,7 @@ class TestGameBoard(unittest.TestCase):
         value: str = 'wow'
         with self.assertRaises(ValueError) as e:
             self.game_board.locations = value
-        self.assertTrue(self.utils.spell_check(str(e.exception),
+        self.assertTrue(utils.spell_check(str(e.exception),
                                                f'Locations must be a dict. The key must be a tuple of Vector Objects, '
                                                f'and the value a list of GameObject. '
                                                f'It is a(n) {value.__class__.__name__} with the value of {value}.',
@@ -96,7 +95,7 @@ class TestGameBoard(unittest.TestCase):
         value: str = 'wow'
         with self.assertRaises(ValueError) as e:
             self.game_board.walled = value
-        self.assertTrue(self.utils.spell_check(str(e.exception),
+        self.assertTrue(utils.spell_check(str(e.exception),
                                                f'GameBoard.walled must be a bool. '
                                                f'It is a(n) {value.__class__.__name__} with the value of {value}.',
                                                False))

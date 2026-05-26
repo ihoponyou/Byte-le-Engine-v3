@@ -2,7 +2,7 @@ import unittest
 import pytest
 
 from bytele.game.utils.vector import Vector
-import bytele.game.test_suite.utils
+from . import utils
 
 class TestVector(unittest.TestCase):
     """
@@ -14,7 +14,6 @@ class TestVector(unittest.TestCase):
     def setUp(self) -> None:
         self.vector1: Vector = Vector(8, 10)
         self.vector2: Vector = Vector(x=5, y=5)
-        self.utils = game.test_suite.utils
 
     # test sets
     def test_vector_set_x(self) -> None:
@@ -24,7 +23,7 @@ class TestVector(unittest.TestCase):
     def test_vector_set_x_fail(self) -> None:
         with self.assertRaises(ValueError) as e:
             self.vector1.x = 'test'
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'The given x value, {"test"}, is not an integer.', False))
+        self.assertTrue(utils.spell_check(str(e.exception), f'The given x value, {"test"}, is not an integer.', False))
 
     def test_vector_set_y(self) -> None:
         self.vector1.y = 5
@@ -33,7 +32,7 @@ class TestVector(unittest.TestCase):
     def test_vector_set_y_fail(self) -> None:
         with self.assertRaises(ValueError) as e:
             self.vector1.y = 'test'
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'The given y value, {"test"}, is not an integer.', False))
+        self.assertTrue(utils.spell_check(str(e.exception), f'The given y value, {"test"}, is not an integer.', False))
 
     def test_vector_from_xy_tuple(self) -> None:
         self.assertEqual(Vector.from_xy_tuple((8, 10)), self.vector1)

@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from bytele.server.unit_tests.conftest import EXPECTED_DATETIME, EXPECTED_RUN_RESPONSE
+from .conftest import EXPECTED_DATETIME, EXPECTED_RUN_RESPONSE
 
 
 

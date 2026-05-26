@@ -8,7 +8,7 @@ from bytele.game.utils.vector import Vector
 from bytele.game.common.player import Player
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.action import ActionType
-import bytele.game.test_suite.utils
+from . import utils
 
 class TestMovementControllerIfStations(unittest.TestCase):
     """
@@ -38,12 +38,11 @@ class TestMovementControllerIfStations(unittest.TestCase):
         # test movements up, down, left and right by starting with default 3,3 then know if it changes from there \/
         self.client = Player(None, None, [], self.avatar)
         self.game_board.generate_map()
-        self.utils = game.test_suite.utils
 
     def test_move_up_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
-        self.assertTrue(self.utils.spell_check(str(self.client.avatar.position), str(Vector(2, 1)), False))
+        self.assertTrue(utils.spell_check(str(self.client.avatar.position), str(Vector(2, 1)), False))
 
     def test_move_down(self):
         self.movement_controller.handle_actions(ActionType.MOVE_UP, self.client, self.game_board)
@@ -52,7 +51,7 @@ class TestMovementControllerIfStations(unittest.TestCase):
 
     def test_move_down_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_DOWN, self.client, self.game_board)
-        self.assertTrue(self.utils.spell_check(str(self.client.avatar.position), str(Vector(2, 2)), False))
+        self.assertTrue(utils.spell_check(str(self.client.avatar.position), str(Vector(2, 2)), False))
 
     def test_move_left(self):
         self.movement_controller.handle_actions(ActionType.MOVE_LEFT, self.client, self.game_board)
@@ -61,7 +60,7 @@ class TestMovementControllerIfStations(unittest.TestCase):
     def test_move_left_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_LEFT, self.client, self.game_board)
         self.movement_controller.handle_actions(ActionType.MOVE_LEFT, self.client, self.game_board)
-        self.assertTrue(self.utils.spell_check(str(self.client.avatar.position), str(Vector(1, 2)), False))
+        self.assertTrue(utils.spell_check(str(self.client.avatar.position), str(Vector(1, 2)), False))
 
     def test_move_right(self):
         self.movement_controller.handle_actions(ActionType.MOVE_LEFT, self.client, self.game_board)
@@ -70,4 +69,4 @@ class TestMovementControllerIfStations(unittest.TestCase):
 
     def test_move_right_fail(self):
         self.movement_controller.handle_actions(ActionType.MOVE_RIGHT, self.client, self.game_board)
-        self.assertTrue(self.utils.spell_check(str(self.client.avatar.position), str(Vector(2, 2)), False))
+        self.assertTrue(utils.spell_check(str(self.client.avatar.position), str(Vector(2, 2)), False))
