@@ -7,11 +7,11 @@ from bytele.game.common.avatar import Avatar
 from bytele.game.common.player import Player
 from bytele.game.common.map.game_board import GameBoard
 from bytele.game.controllers.interact_controller import InteractController
-from bytele.game.fnaacm.items.scrap import Scrap
-from bytele.game.fnaacm.map.door import Door
+from bytele.game.common.items.scrap import Scrap
+from bytele.game.common.map.door import Door
 from bytele.game.utils.vector import Vector
 from bytele.game.common.enums import ActionType
-from bytele.game.fnaacm.stations.generator import Generator
+from bytele.game.common.map.generator import Generator
 
 class TestGenerator(unittest.TestCase):
     def setUp(self) -> None:

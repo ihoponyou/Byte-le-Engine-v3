@@ -2,7 +2,7 @@ from typing import Self
 import unittest
 
 from bytele.game.common.game_object import GameObject
-from bytele.game.fnaacm.game_object_list import GameObjectList
+from bytele.game.common.game_object_list import GameObjectList
 
 
 class ExampleGameObject(GameObject):

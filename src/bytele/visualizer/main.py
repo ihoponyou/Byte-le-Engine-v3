@@ -4,7 +4,7 @@ import os
 import cv2
 import json
 from bytele.game.common.enums import ObjectType
-import bytele.game.config
+import bytele.game.config as GAME_CONFIG
 from typing import Callable, overload
 from bytele.game.utils.vector import Vector
 from bytele.visualizer.adapter import Adapter
@@ -591,7 +591,7 @@ class ByteVisualiser:
                 self.paused = True
             # End button to end visualizer
             if PlaybackButtons.END_BUTTON in button_pressed:
-                self.tick = self.config.NUMBER_OF_FRAMES_PER_TURN * (game.config.MAX_TICKS + 1)
+                self.tick = self.config.NUMBER_OF_FRAMES_PER_TURN * (GAME_CONFIG.MAX_TICKS + 1)
             # Pause button to pause visualizer (allow looping of turn animation)
             if PlaybackButtons.PAUSE_BUTTON in button_pressed:
                 self.paused = not self.paused

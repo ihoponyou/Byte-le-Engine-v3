@@ -1,9 +1,9 @@
-import os
 import pygame as pyg
 
 from bytele.visualizer.bytesprites.bytesprite import ByteSprite
 from bytele.game.utils.vector import Vector
 from bytele.visualizer.bytesprites.bytesprite_factory import ByteSpriteFactory
+from bytele.visualizer.config import PATH_TO_SPRITESHEETS
 
 
 class DoorBS(ByteSpriteFactory):
@@ -14,6 +14,8 @@ class DoorBS(ByteSpriteFactory):
     0 -> CLOSED
     1 -> OPEN
     """
+
+    PATH_TO_SPRITE = PATH_TO_SPRITESHEETS / 'Door.png'
 
     @staticmethod
     def update(
@@ -33,10 +35,7 @@ class DoorBS(ByteSpriteFactory):
     def create_bytesprite(screen: pyg.Surface) -> ByteSprite:
         return ByteSprite(
             screen,
-            os.path.join(
-                os.getcwd(),
-                'visualizer/images/spritesheets/Door.png'
-            ),
+            str(DoorBS.PATH_TO_SPRITE.resolve()),
             2,   # rows
             4,   # frames per row (even if static)
             DoorBS.update,

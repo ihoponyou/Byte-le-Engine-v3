@@ -6,11 +6,11 @@ from bytele.game.controllers.interact_controller import InteractController
 from bytele.game.common.map.game_board import GameBoard
 from bytele.game.utils.vector import Vector
 from bytele.game.common.map.wall import Wall
-from bytele.game.common.stations.station import Station
-from bytele.game.common.stations.station_example import StationExample
-from bytele.game.common.stations.station_receiver_example import StationReceiverExample
-from bytele.game.common.stations.occupiable_station import OccupiableStation
-from bytele.game.common.stations.occupiable_station_example import OccupiableStationExample
+from bytele.game.common.map.station import Station
+from bytele.game.common.map.station_example import StationExample
+from bytele.game.common.map.station_receiver_example import StationReceiverExample
+from bytele.game.common.map.occupiable_station import OccupiableStation
+from bytele.game.common.map.occupiable_station_example import OccupiableStationExample
 from bytele.game.common.game_object import GameObject
 from bytele.game.common.action import ActionType
 from bytele.game.common.player import Player

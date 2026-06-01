@@ -1,7 +1,7 @@
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.enums import ObjectType
 from bytele.game.common.items.item import Item
-from bytele.game.common.stations.station import Station
+from bytele.game.common.map.station import Station
 
 
 # create example of station that takes held_item from avatar at inventory slot 0

@@ -3,16 +3,12 @@ from typing import Any, Self
 
 from bytele.game.common.enums import *
 from bytele.game.common.game_object import GameObject
+from bytele.game.common.game_object_list import GameObjectList
+from bytele.game.common.map.coin_spawner import CoinSpawner, CoinSpawnerList
 from bytele.game.common.map.game_object_container import GameObjectContainer
 from bytele.game.common.map.wall import Wall
 from bytele.game.common.map.occupiable import Occupiable
-from bytele.game.fnaacm.map.coin_spawner import CoinSpawner, CoinSpawnerList
-from bytele.game.fnaacm.map.door import Door
-from bytele.game.fnaacm.map.scrap_spawner_list import ScrapSpawnerList
-from bytele.game.fnaacm.stations.battery_spawner import BatterySpawner
-from bytele.game.fnaacm.stations.generator import Generator
-from bytele.game.fnaacm.map.battery_spawner_list import BatterySpawnerList
-from bytele.game.fnaacm.stations.scrap_spawner import ScrapSpawner
+from bytele.game.common.map.door import Door
 from bytele.game.utils.vector import Vector
 from bytele.game.common.map.json_to_instance import json_to_instance
 
@@ -139,9 +135,6 @@ class GameBoard(GameObject):
         # when passing Vectors as a tuple, end the tuple of Vectors with a comma, so it is recognized as a tuple
         self.locations: dict = locations
         self.walled: bool = walled
-        self.generators: dict[Vector, Generator] = {}
-        self.battery_spawners: BatterySpawnerList = BatterySpawnerList()
-        self.scrap_spawners: ScrapSpawnerList = ScrapSpawnerList()
         self.coin_spawners: CoinSpawnerList = CoinSpawnerList()
 
     @property
@@ -232,14 +225,8 @@ class GameBoard(GameObject):
                 if hasattr(obj, 'position'):
                     obj.position = vec
 
-                # assume that none of the following will be added after __map_init
-                if isinstance(obj, Generator):
-                    self.generators[vec] = obj
-                elif isinstance(obj, BatterySpawner):
-                    self.battery_spawners.append(obj)
-                elif isinstance(obj, ScrapSpawner):
-                    self.scrap_spawners.append(obj)
-                elif isinstance(obj, CoinSpawner):
+                # assume that the map doesn't change after map init
+                if isinstance(obj, CoinSpawner):
                     self.coin_spawners.append(obj)
 
         if self.walled:
@@ -441,9 +428,6 @@ class GameBoard(GameObject):
         data["walled"] = self.walled
         data['event_active'] = self.event_active
 
-        data['generators'] = {str(pos.to_json()): generator.to_json() for (pos, generator) in self.generators.items()}
-        data['battery_spawners'] = self.battery_spawners.to_json()
-        data['scrap_spawners'] = self.scrap_spawners.to_json()
         data['coin_spawners'] = self.coin_spawners.to_json()
 
         return data
@@ -477,29 +461,16 @@ class GameBoard(GameObject):
             self.game_map = None
         else:
             self.game_map = {}
-            self.generators.clear()
-            self.battery_spawners.clear()
-            self.scrap_spawners.clear()
             self.coin_spawners.clear()
             doors: dict[str, Door] = dict()
             for k, v in data['game_map'].items():
                 vec = Vector.from_json_str(k)                
                 go_container = GameObjectContainer().from_json(v)
                 for go in go_container:
-                    if isinstance(go, Generator):
-                        self.generators[vec] = go
-                    elif isinstance(go, BatterySpawner):
-                        self.battery_spawners.append(go)
-                    elif isinstance(go, ScrapSpawner):
-                        self.scrap_spawners.append(go)
-                    elif isinstance(go, CoinSpawner):
+                    if isinstance(go, CoinSpawner):
                         self.coin_spawners.append(go)
                     elif isinstance(go, Door):
                         doors[go.id] = go
                 self.game_map[vec] = go_container
-            for gen in self.generators.values():
-                for i, door in enumerate(gen.connected_doors):
-                    assert door.id in doors
-                    gen.connected_doors[i] = doors[door.id]
 
         return self

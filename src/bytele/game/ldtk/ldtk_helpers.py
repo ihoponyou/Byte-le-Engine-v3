@@ -2,21 +2,11 @@ from bytele.game.common.avatar import Avatar
 from bytele.game.common.game_object import GameObject
 from bytele.game.common.map.game_board import GameBoard
 from bytele.game.common.map.wall import Wall
+from bytele.game.common.map.door import Door
+from bytele.game.common.map.coin_spawner import CoinSpawner
+from bytele.game.ldtk.ldtk_json import EntityInstance, LayerInstance, LdtkJSON, Level 
 from bytele.game.config import LDtk
-from bytele.game.fnaacm.bots.crawler_bot import CrawlerBot
-from bytele.game.fnaacm.bots.dumb_bot import DumbBot
-from bytele.game.fnaacm.bots.ian_bot import IANBot
-from bytele.game.fnaacm.bots.jumper_bot import JumperBot
-from bytele.game.fnaacm.bots.support_bot import SupportBot
-from bytele.game.fnaacm.map.coin_spawner import CoinSpawner
-from bytele.game.fnaacm.map.door import Door
-from bytele.game.fnaacm.map.vent import Vent
-from bytele.game.fnaacm.stations.battery_spawner import BatterySpawner
-from bytele.game.fnaacm.stations.generator import Generator
-from bytele.game.fnaacm.stations.scrap_spawner import ScrapSpawner
-from bytele.game.common.stations.refuge import Refuge
 from bytele.game.utils.helpers import read_json_file
-from bytele.game.utils.ldtk_json import EntityInstance, LayerInstance, LdtkJSON, Level, ldtk_json_from_dict 
 from bytele.game.utils.vector import Vector
 
 
@@ -31,33 +21,24 @@ highest = first; lowest = last
 def get_entity_load_priority(entity: EntityInstance) -> int:
     return ENTITY_LOAD_PRIORITY.get(entity.identifier.lower(), 0)
 
-def get_spawned_entity_from_spawner(spawner: EntityInstance) -> GameObject:
+def _get_character_from_start(character_start: EntityInstance) -> GameObject:
     spawned_entity: GameObject | None = None
     parsed_value: str = ''
-    for field in spawner.field_instances:
-        if field.identifier.lower() != 'spawned_entity':
+    for field in character_start.field_instances:
+        if field.identifier.lower() != 'character_to_spawn':
             continue
 
         parsed_value = field.value
         match field.value.lower():
             case LDtk.SpawnedEntityType.PLAYER:
                 spawned_entity = Avatar()
-            case LDtk.SpawnedEntityType.IAN:
-                spawned_entity = IANBot()
-            case LDtk.SpawnedEntityType.CRAWLER:
-                spawned_entity = CrawlerBot()
-            case LDtk.SpawnedEntityType.JUMPER:
-                spawned_entity = JumperBot()
-            case LDtk.SpawnedEntityType.SUPPORT:
-                spawned_entity = SupportBot()
-            case LDtk.SpawnedEntityType.DUMMY:
-                spawned_entity = DumbBot()
             case _:
                 raise ValueError(f'unhandled spawner entity type: "{field.value}"')
+
     if spawned_entity is None:
         raise RuntimeError(f'could not determine spawner\'s entity type; best guess is "{parsed_value}"')
-    return spawned_entity
 
+    return spawned_entity
 
 def load_entities(locations: dict[Vector, list[GameObject]], entity_layer: LayerInstance):
     doors: dict[str, Door] = {}
@@ -68,16 +49,10 @@ def load_entities(locations: dict[Vector, list[GameObject]], entity_layer: Layer
             case LDtk.EntityIdentifier.DOOR:
                 game_object = Door()
                 doors[entity.iid] = game_object
-            case LDtk.EntityIdentifier.GENERATOR:
-                game_object = Generator.from_ldtk_entity(entity, doors)
-            case LDtk.EntityIdentifier.BATTERY:
-                game_object = BatterySpawner.from_ldtk_entity(entity)
-            case LDtk.EntityIdentifier.ENTITY_SPAWN:
-                game_object = get_spawned_entity_from_spawner(entity)
-            case LDtk.EntityIdentifier.SCRAP:
-                game_object = ScrapSpawner.from_ldtk_entity(entity)
-            case LDtk.EntityIdentifier.COIN:
+            case LDtk.EntityIdentifier.COIN_SPAWNER:
                 game_object = CoinSpawner.from_ldtk_entity(entity)
+            case LDtk.EntityIdentifier.CHARACTER_START:
+                game_object = _get_character_from_start(entity)
             case _:
                 raise ValueError(f'unhandled entity identifier: "{entity.identifier}"')
 
@@ -96,12 +71,6 @@ def load_collisions(locations: dict[Vector, list[GameObject]], collision_layer: 
                 game_object = Wall()
             case LDtk.CollisionType.SHADOW:
                 game_object = Wall(use_shadow_sprite=True)
-            case LDtk.CollisionType.VENT:
-                game_object = Vent()
-            case LDtk.CollisionType.VENT_DOOR:
-                game_object = Vent(use_door_sprite=True)
-            case LDtk.CollisionType.SAFE_POINT:
-                game_object = Refuge(position.x, position.y)
             case _:
                 raise ValueError(f'unhandled collision type: {collision_type}')
 

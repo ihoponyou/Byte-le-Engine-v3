@@ -11,16 +11,9 @@ from bytele.game.common.enums import ObjectType
 from bytele.visualizer.bytesprites.bytesprite import ByteSprite
 from bytele.visualizer.bytesprites.tileBS import TileBS
 from bytele.visualizer.bytesprites.wallBS import WallBS
-from bytele.visualizer.bytesprites.scrapBS import ScrapBS
-from bytele.visualizer.bytesprites.ventBS import VentBS
-from bytele.visualizer.bytesprites.generatorBS import GeneratorBS
 from bytele.visualizer.bytesprites.coinBS import CoinBS
 from bytele.visualizer.bytesprites.avatarBS import AvatarBS
-from bytele.visualizer.bytesprites.botBS import MovingBotBS
-from bytele.visualizer.bytesprites.boosterbotBS import BoosterBotBS
 from bytele.visualizer.bytesprites.doorBS import DoorBS
-from bytele.visualizer.bytesprites.safeSpotBS import SafeSpotBS
-from bytele.visualizer.bytesprites.batteryBS import BatteryBS
 
 from bytele.visualizer.templates.menu_templates import Basic, MenuTemplate
 from bytele.visualizer.templates.playback_template import PlaybackTemplate, PlaybackButtons
@@ -96,29 +89,10 @@ class Adapter:
     # ---------------- Bytesprite Factories ----------------
     def populate_bytesprite_factories(self) -> dict[int, Callable[[pygame.Surface], ByteSprite]]:
         return {
-            # ---- Static tiles ----
             ObjectType.TILE.value: TileBS.create_bytesprite,
             ObjectType.WALL.value: WallBS.create_bytesprite,
-            ObjectType.SCRAP_SPAWNER.value: ScrapBS.create_bytesprite,
-            ObjectType.VENT.value: VentBS.create_bytesprite,
-            ObjectType.GENERATOR.value: GeneratorBS.create_bytesprite,
             ObjectType.COIN_SPAWNER.value: CoinBS.create_bytesprite,
-            ObjectType.REFUGE.value: SafeSpotBS.create_bytesprite,
-            ObjectType.BATTERY_SPAWNER.value: BatteryBS.create_bytesprite,
-
-            # ---- Avatar ----
             ObjectType.AVATAR.value: AvatarBS.create_bytesprite,
-
-            # ---- Moving bots ----
-            ObjectType.IAN_BOT.value: lambda screen: MovingBotBS.create_bytesprite(screen, "IanBot.png", ObjectType.IAN_BOT.value),
-            ObjectType.JUMPER_BOT.value: lambda screen: MovingBotBS.create_bytesprite(screen, "JumperBot.png", ObjectType.JUMPER_BOT.value),
-            ObjectType.DUMB_BOT.value: lambda screen: MovingBotBS.create_bytesprite(screen, "DumbBot.png", ObjectType.DUMB_BOT.value),
-            ObjectType.CRAWLER_BOT.value: lambda screen: MovingBotBS.create_bytesprite(screen, "CrawlerBot.png", ObjectType.CRAWLER_BOT.value),
-
-            # ---- Booster bot ----
-            ObjectType.SUPPORT_BOT.value: BoosterBotBS.create_bytesprite,
-
-            # ---- Door ----
             ObjectType.DOOR.value: DoorBS.create_bytesprite,
         }
 

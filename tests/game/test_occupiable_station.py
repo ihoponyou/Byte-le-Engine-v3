@@ -1,7 +1,7 @@
 import unittest
 
-from bytele.game.common.stations.occupiable_station import OccupiableStation
-from bytele.game.common.stations.station import Station
+from bytele.game.common.map.occupiable_station import OccupiableStation
+from bytele.game.common.map.station import Station
 from bytele.game.common.map.wall import Wall
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.items.item import Item

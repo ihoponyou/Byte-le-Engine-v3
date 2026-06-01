@@ -1,7 +1,7 @@
 import unittest
 
-from bytele.game.common.stations.station import Station
-from bytele.game.common.stations.station_example import StationExample
+from bytele.game.common.map.station import Station
+from bytele.game.common.map.station_example import StationExample
 from bytele.game.common.items.item import Item
 from bytele.game.controllers.inventory_controller import InventoryController
 from bytele.game.common.avatar import Avatar

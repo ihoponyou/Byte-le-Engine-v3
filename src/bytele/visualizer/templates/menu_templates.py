@@ -7,6 +7,7 @@ import pygame
 from bytele.game.utils.vector import Vector
 from bytele.visualizer.utils.button import Button, ButtonColors
 from bytele.visualizer.utils.text import Text
+from bytele.visualizer.config import PATH_TO_STATICSPRITES
 
 """
 This is file is for creating different templates for the start menu of the visualizer. Each different menu screen 
@@ -98,9 +99,7 @@ class Basic(MenuTemplate):
         self.final_score_text: Text | None = None
 
         # START MENU IMAGE
-        self.background = pygame.image.load(
-            os.path.join(os.getcwd(), "visualizer/images/staticsprites/StartMenu.png")
-        ).convert_alpha()
+        self.background = pygame.image.load(PATH_TO_STATICSPRITES / 'StartMenu.png').convert_alpha()
         self.background = pygame.transform.smoothscale(self.background, self.screen.get_size())
 
         menu_colors = ButtonColors(

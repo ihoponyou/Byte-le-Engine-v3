@@ -1,4 +1,5 @@
 import os
+from typing import Any
 import warnings
 from pathlib import Path
 
@@ -39,11 +40,16 @@ MIN_CLIENTS_CONTINUE = None                         # minimum number of clients 
 MAX_CLIENTS_CONTINUE = None                         # maximum number of clients required to continue running the game; should be None when SET_NUMBER_OF_CLIENTS is used
 SET_NUMBER_OF_CLIENTS_CONTINUE = 1                  # required number of clients to continue running the game; should be None when MIN_CLIENTS or MAX_CLIENTS are used
 
-ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are specifically allowed to access
-                   "game.common.enums",
+ALLOWED_MODULES = ["bytele.game.client.user_client",       # modules that clients are specifically allowed to access
+                   "bytele.game.common.enums",
+                   "bytele.game.common.game_object",
+                   "bytele.game.constants",
+                   "bytele.game.common.avatar",
+                   "bytele.game.common.map.game_board",
+                   "bytele.game.common.map.occupiable",
+                   "bytele.game.utils.vector",
                    "typing",
                    "heapq",
-                   "game.common.game_object",
                    "json",
                    "subprocess",
                    "math",
@@ -53,12 +59,6 @@ ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are s
                    "itertools",
                    "functools",
                    "random",
-                   "game.constants",
-                   "game.common.avatar",
-                   "game.common.map.game_board",
-                   "game.common.map.occupiable",
-                   "game.fnaacm.stations.generator",
-                   "game.utils.vector",
                    ]
 
 RESULTS_FILE_NAME = "results.json"                                  # Name and extension of results file
@@ -76,47 +76,48 @@ GAME_MAP_FILEPATH = os.path.join(GAME_MAP_DIR, GAME_MAP_FILE_NAME)      # Filepa
 class Debug:                    # Keeps track of the current debug level of the game
     level = DebugLevel.NONE
 
-# Other Settings Here --------------------------------------------------------------------------------------------------
-
-
+ROOT_DIR_NAME = 'Byte-le-Engine-v3'
 PATH_TO_ROOT_DIR = Path()
 PATH_TO_LDTK_PROJECT = str()
 # this allows us to not ship the .ldtk file with the client package
 if not USE_PRECOMPILED_MAP:
     parts = Path(__file__).parts
-    # will break if this is not the root directory name :)
-    # does not break, however, if the project root is nested in a directory of the same name :^)
-    # will probably break if the project contains a directory with the same name for some reason 8^)
-    root_idx = len(parts) - list(reversed(parts)).index('Byte-le-Engine-v3') 
+    root_idx = len(parts) - list(reversed(parts)).index(ROOT_DIR_NAME) 
     PATH_TO_ROOT_DIR = Path(*parts[:root_idx])
     PATH_TO_LDTK_PROJECT = str(PATH_TO_ROOT_DIR / 'map.ldtk') # uber chopped but works
 
-# should mirror values in LDtk editor, but lowercase
+class LDtkIdentifier(str, Enum):
+    """
+    Level, entity, and enum identifiers in our LDtk project currently use PascalCase.
+    Python enum members use UPPER_CASE.
+
+    By overriding `_generate_next_value`, we can define identifiers using Python convention
+    and have their values close to our LDtk convention.
+    """
+    @staticmethod
+    def _generate_next_value_(name: str, start: int, count: int, last_values: list[Any]) -> Any:
+        # Future projects may simply use UPPER_CASE in LDtk identifiers and simply return the name as-is.
+        return name.lower().replace('_', '')
+
 class LDtk:
     class CollisionType:
+        # should mirror values in LDtk editor
         NONE = 0
         WALL = 1
-        VENT = 2
-        SAFE_POINT = 3
-        VENT_DOOR = 4
         SHADOW = 5
-    class EntityIdentifier:
-        DOOR = 'door'
-        GENERATOR = 'generator'
-        BATTERY = 'battery'
-        ENTITY_SPAWN = 'entityspawn'
-        SCRAP = 'scrap'
-        COIN = 'coin'
-    class LayerIdentifier:
-        ENTITIES = 'entities'
-        COLLISIONS = 'collisions'
-    class LevelIdentifier:
-        PRODUCTION = 'production'
-        TEST = 'test'
-    class SpawnedEntityType:
-        PLAYER = 'player'
-        IAN = 'ian'
-        CRAWLER = 'crawler'
-        JUMPER = 'jumper'
-        SUPPORT = 'support'
-        DUMMY = 'dummy'
+    class EntityIdentifier(LDtkIdentifier):
+        DOOR = auto()
+        GENERATOR = auto()
+        CHARACTER_START = auto()
+        COIN_SPAWNER = auto()
+    class LayerIdentifier(LDtkIdentifier):
+        ENTITIES = auto()
+        COLLISIONS = auto()
+    class LevelIdentifier(LDtkIdentifier):
+        PRODUCTION = auto()
+        TEST = auto()
+    class SpawnedEntityType(LDtkIdentifier):
+        PLAYER = auto()
+
+# Other Settings Here --------------------------------------------------------------------------------------------------
+

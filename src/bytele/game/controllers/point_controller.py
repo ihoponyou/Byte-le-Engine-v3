@@ -4,7 +4,6 @@ import dataclasses
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.enums import ActionType, ObjectType
 from bytele.game.common.map.game_board import GameBoard
-from bytele.game.common.stations.refuge import Refuge
 from bytele.game.controllers.controller import Controller
 
 
@@ -49,10 +48,6 @@ class PointController(Controller):
 
     def calculate_multiplier(self, avatar: Avatar, world: GameBoard, point_data: PointData | None = None) -> float:
         assert avatar.position is not None
-        if Refuge.global_occupied:
-            if point_data is not None:
-                point_data.multiplier_sources['in_refuge'] = 0.0
-            return 0.0
 
         result = self.base_multiplier
 

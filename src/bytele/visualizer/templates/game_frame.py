@@ -1,12 +1,10 @@
 import os
 import pygame as pyg
 
-class GameFrame:
-    BORDER_PATH = os.path.join(
-        os.getcwd(),
-        'visualizer/images/staticsprites/Border.png'
-    )
+from bytele.visualizer.config import PATH_TO_STATICSPRITES
 
+class GameFrame:
+    BORDER_PATH = PATH_TO_STATICSPRITES / 'Border.png'
     GAME_WIDTH = 1280
     GAME_HEIGHT = 720
 

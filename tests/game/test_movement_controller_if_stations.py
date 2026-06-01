@@ -3,7 +3,7 @@ import unittest
 from bytele.game.common.game_object import GameObject
 from bytele.game.controllers.movement_controller import MovementController
 from bytele.game.common.map.game_board import GameBoard
-from bytele.game.common.stations.station import Station
+from bytele.game.common.map.station import Station
 from bytele.game.utils.vector import Vector
 from bytele.game.common.player import Player
 from bytele.game.common.avatar import Avatar

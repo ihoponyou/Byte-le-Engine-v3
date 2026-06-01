@@ -15,7 +15,7 @@ from bytele.server.models.tournament import Tournament
 from bytele.server.models.turn import Turn
 from bytele.server.runner_utils import DB
 
-from bytele.server.server_config import Config
+from bytele.server.config import Config
 from bytele.server.enums import RunnerOptions
 from bytele.server.runner_utils import run_runner
 

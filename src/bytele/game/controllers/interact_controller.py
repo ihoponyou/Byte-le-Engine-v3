@@ -3,7 +3,7 @@ from bytele.game.common.enums import *
 from bytele.game.constants import INTERACT_TO_DIRECTION
 from bytele.game.controllers.controller import Controller
 from bytele.game.common.player import Player
-from bytele.game.common.stations.station import Station
+from bytele.game.common.map.station import Station
 from bytele.game.common.map.game_board import GameBoard
 
 
@@ -36,10 +36,6 @@ class InteractController(Controller):
         """
         handle things the player interacts with without needing an "INTERACT_*" action
         """
-        for battery_spawner in world.battery_spawners:
-            battery_spawner.handle_turn(avatar)
-        for scrap_spawner in world.scrap_spawners:
-            scrap_spawner.handle_turn(avatar)
         for coin_spawner in world.coin_spawners:
             coin_spawner.handle_turn(avatar)
 

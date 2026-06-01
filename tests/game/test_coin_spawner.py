@@ -1,7 +1,7 @@
 import unittest
 
 from bytele.game.common.avatar import Avatar
-from bytele.game.fnaacm.map.coin_spawner import CoinSpawner
+from bytele.game.common.map.coin_spawner import CoinSpawner
 from bytele.game.utils.vector import Vector
 
 

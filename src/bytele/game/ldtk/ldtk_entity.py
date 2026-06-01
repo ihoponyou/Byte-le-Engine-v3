@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Self
 
-from bytele.game.utils import ldtk_json
+from bytele.game.ldtk import ldtk_json
 
 
 class LDtkEntity(ABC):

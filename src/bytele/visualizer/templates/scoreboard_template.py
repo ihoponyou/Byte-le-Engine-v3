@@ -71,13 +71,9 @@ class ScoreboardTemplate(InfoTemplate):
         # self.fastest_speed_button.rect.center = screen_center.add_x_y(200, 350).as_tuple()
         self.team_name_text.rect.center = Vector.from_xy_tuple(screen.get_rect().center).add_x_y(380, 340).as_tuple()
         
-
         # Store current values for updates
-        self.current_scrap = 0
         self.current_score = 0
         self.current_turn = 0
-        self.current_health = 0
-        self.current_power = 0
 
     def recalc_animation(self, turn_log: dict) -> None:
         """
@@ -99,9 +95,6 @@ class ScoreboardTemplate(InfoTemplate):
                 )
 
             self.current_score = sum_avatar_attr('score')
-            self.current_scrap = sum_avatar_attr('scrap')
-            self.current_health = sum_avatar_attr('health')
-            self.current_power = sum_avatar_attr('power')
         else:
             self.current_score = turn_log.get('score', 0)
 
@@ -111,9 +104,6 @@ class ScoreboardTemplate(InfoTemplate):
         # Update Text objects
         self.score.text = f"Score: {self.current_score}"
         self.turn.text = f"{self.current_turn} / {MAX_TICKS}"
-        self.scrap.text = f"Scrap: {self.current_scrap}"
-        self.health_text.text = f"HP: {self.current_health}"
-        self.power_text.text = f"Power: {self.current_power:3}%"
         TEAM_NAME_TRUNCATE_CHAR_LIMIT = 18
         if len(team_name) > TEAM_NAME_TRUNCATE_CHAR_LIMIT:
             team_name = team_name[:TEAM_NAME_TRUNCATE_CHAR_LIMIT-3] + '...'
@@ -125,7 +115,4 @@ class ScoreboardTemplate(InfoTemplate):
         """
         self.score.render()
         self.turn.render()
-        self.scrap.render()
-        self.health_text.render()
-        self.power_text.render()
         self.team_name_text.render()

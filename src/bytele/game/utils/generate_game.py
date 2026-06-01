@@ -3,9 +3,9 @@ import random
 
 from bytele.game.common.game_object import GameObject
 from bytele.game.config import GAME_MAP_DIR, GAME_MAP_FILEPATH, PATH_TO_LDTK_PROJECT, USE_PRECOMPILED_MAP
-from bytele.game.utils.helpers import write_json_file
 from bytele.game.common.map.game_board import GameBoard
-from bytele.game.utils.ldtk_helpers import map_data_from_ldtk_file
+from bytele.game.ldtk.ldtk_helpers import map_data_from_ldtk_file
+from bytele.game.utils.helpers import write_json_file
 from bytele.game.utils.vector import Vector
 
 

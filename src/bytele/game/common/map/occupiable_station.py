@@ -4,7 +4,7 @@ from typing import Self
 from bytele.game.common.map.occupiable import Occupiable
 from bytele.game.common.enums import ObjectType
 from bytele.game.common.items.item import Item
-from bytele.game.common.stations.station import Station
+from bytele.game.common.map.station import Station
 
 
 # create station object that contains occupied_by

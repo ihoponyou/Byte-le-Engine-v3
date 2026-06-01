@@ -1,28 +1,30 @@
 from typing import Self, override
+
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.enums import ObjectType
 from bytele.game.common.map.occupiable import Occupiable
-from bytele.game.fnaacm.ldtk_entity import LDtkEntity
-from bytele.game.fnaacm.timer import Timer
-from bytele.game.utils.ldtk_json import EntityInstance
+from bytele.game.common.game_object_list import GameObjectList
+from bytele.game.ldtk.ldtk_entity import LDtkEntity
+from bytele.game.common.timer import Timer
+from bytele.game.ldtk.ldtk_json import EntityInstance
 from bytele.game.utils.vector import Vector
 
-class BatterySpawner(Occupiable, LDtkEntity):
+class CoinSpawner(Occupiable, LDtkEntity):
     """
-    A tile that occasionally holds batteries which increase the player avatar's power.
+    A tile that occasionally holds coins which increase the player's points
+
+    The player's avatar collects coins by walking over this tile when they are available
     """
 
     class LDtkFieldIdentifers:
         TURNS_TO_RESPAWN = 'turns_to_respawn'
-        POWER_VALUE = 'power_value'
         POINT_VALUE = 'point_value'
 
-    def __init__(self, position: Vector = Vector(0, 0), turns_to_respawn: int = 1, recharge_amount: int = 1, point_value: int = 1) -> None:
+    def __init__(self, position: Vector = Vector(0,0), turns_to_respawn: int = 1, point_value: int = 1) -> None:
         super().__init__()
-        self.object_type: ObjectType = ObjectType.BATTERY_SPAWNER
+        self.object_type: ObjectType = ObjectType.COIN_SPAWNER
         self.position: Vector = position
         self.point_value: int = point_value
-        self.__recharge_amount: int = recharge_amount
         self.__timer = Timer(duration=turns_to_respawn)
 
     @override
@@ -30,30 +32,27 @@ class BatterySpawner(Occupiable, LDtkEntity):
     def from_ldtk_entity(cls, entity: EntityInstance) -> Self:
         position: Vector = Vector(entity.grid[0], entity.grid[1])
         turns_to_respawn: int = -1
-        recharge_amount: int = -1
-        point_value: int = -1
+        points: int = -1
         for field in entity.field_instances:
             match field.identifier:
-                case BatterySpawner.LDtkFieldIdentifers.TURNS_TO_RESPAWN:
+                case CoinSpawner.LDtkFieldIdentifers.TURNS_TO_RESPAWN:
                     turns_to_respawn = field.value
-                case BatterySpawner.LDtkFieldIdentifers.POWER_VALUE:
-                    recharge_amount = field.value
-                case BatterySpawner.LDtkFieldIdentifers.POINT_VALUE:
-                    point_value = field.value
-        return cls(position, turns_to_respawn, recharge_amount, point_value)
+                case CoinSpawner.LDtkFieldIdentifers.POINT_VALUE:
+                    points = field.value
+        return cls(position=position, turns_to_respawn=turns_to_respawn, point_value=points)
 
     def __eq__(self, value: object, /) -> bool:
-        return isinstance(value, self.__class__) and \
-            self.position == value.position and \
-            self.__recharge_amount == value.__recharge_amount and \
-            self.__timer == value.__timer and \
-            self.point_value == value.point_value
+        if isinstance(value, self.__class__):
+            return \
+                self.position == value.position and \
+                self.__timer == value.__timer and \
+                self.point_value == value.point_value
+        return False
 
     @override
     def to_json(self) -> dict:
         self.state = 'idle' if self.is_available else 'unavailable'
         data = super().to_json()
-        data['recharge_amount'] = self.__recharge_amount
         data['timer'] = self.__timer.to_json()
         data['position'] = self.position.to_json()
         data['point_value'] = self.point_value
@@ -62,7 +61,6 @@ class BatterySpawner(Occupiable, LDtkEntity):
     @override
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.__recharge_amount = data['recharge_amount']
         self.__timer = Timer().from_json(data['timer'])
         self.position = Vector().from_json(data['position'])
         self.point_value = data['point_value']
@@ -72,10 +70,6 @@ class BatterySpawner(Occupiable, LDtkEntity):
     def is_available(self) -> bool:
         return self.__timer.done
 
-    @property
-    def recharge_amount(self) -> int:
-        return self.__recharge_amount
-
     def tick(self) -> None:
         self.__timer.tick()
 
@@ -84,5 +78,8 @@ class BatterySpawner(Occupiable, LDtkEntity):
             return
         if not self.__timer.reset(force=False):
             return
-        avatar.give_power(self.__recharge_amount)
         avatar.give_score(self.point_value)
+
+class CoinSpawnerList(GameObjectList[CoinSpawner]):
+    def __init__(self):
+        super().__init__('coins', CoinSpawner)

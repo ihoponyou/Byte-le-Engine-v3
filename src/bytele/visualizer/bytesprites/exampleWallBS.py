@@ -1,6 +1,8 @@
 import os
 
 import os
+
+from bytele.visualizer.config import PATH_TO_SPRITESHEETS
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame as pyg
 
@@ -37,5 +39,5 @@ class WallBytespriteFactoryExample(ByteSpriteFactory):
         :param screen:
         :return: a ByteSprite object
         """
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/ExampleWallSS.png'), 1,
+        return ByteSprite(screen, str(( PATH_TO_SPRITESHEETS / 'ExampleWallSS.png' ).resolve()), 1,
                           8, WallBytespriteFactoryExample.update)

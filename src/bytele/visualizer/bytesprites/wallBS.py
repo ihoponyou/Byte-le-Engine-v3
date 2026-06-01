@@ -5,6 +5,7 @@ from bytele.game.common.enums import ObjectType
 from bytele.visualizer.bytesprites.bytesprite import ByteSprite
 from bytele.game.utils.vector import Vector
 from bytele.visualizer.bytesprites.bytesprite_factory import ByteSpriteFactory
+from bytele.visualizer.config import PATH_TO_STATICSPRITES
 
 
 class WallBS(ByteSpriteFactory):
@@ -12,10 +13,7 @@ class WallBS(ByteSpriteFactory):
     Static Wall bytesprite using Wall.png.
     """
 
-    WALL_PATH = os.path.join(
-        os.getcwd(),
-        'visualizer/images/staticsprites/Wall.png'
-    )
+    WALL_PATH = PATH_TO_STATICSPRITES / 'Wall.png'
 
     @staticmethod
     def update(
@@ -33,7 +31,7 @@ class WallBS(ByteSpriteFactory):
     def create_bytesprite(screen: pyg.Surface) -> ByteSprite:
         return ByteSprite(
             screen,
-            WallBS.WALL_PATH,
+            str(WallBS.WALL_PATH.resolve()),
             2,                  # brick wall & shadow
             ObjectType.WALL.value,                  # object type (match Adapter)
             WallBS.update,

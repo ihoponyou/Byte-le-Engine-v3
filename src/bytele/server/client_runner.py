@@ -31,7 +31,7 @@ from bytele.server.schemas.team_type.team_type_base import TeamTypeBase
 from bytele.server.schemas.tournament.tournament_base import TournamentBase
 from bytele.server.schemas.turn.turn_base import TurnBase
 from bytele.server.schemas.university.university_base import UniversityBase
-from bytele.server.server_config import Config
+from bytele.server.config import Config
 from bytele.server.enums import RunnerOptions
 
 # Config for loggers

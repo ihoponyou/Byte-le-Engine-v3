@@ -4,8 +4,8 @@ from bytele.game.common.enums import ObjectType
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.items.item import Item
 from bytele.game.common.map.game_object_container import GameObjectContainer
-from bytele.game.common.stations.station import Station
-from bytele.game.common.stations.occupiable_station import OccupiableStation
+from bytele.game.common.map.station import Station
+from bytele.game.common.map.occupiable_station import OccupiableStation
 from bytele.game.common.map.wall import Wall
 from bytele.game.controllers.movement_controller import MovementController
 from bytele.game.utils.vector import Vector

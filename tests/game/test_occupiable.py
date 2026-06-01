@@ -2,8 +2,8 @@ import unittest
 
 from bytele.game.common.game_object import GameObject
 from bytele.game.common.map.game_board import GameBoard
-from bytele.game.common.stations.occupiable_station import OccupiableStation
-from bytele.game.common.stations.station import Station
+from bytele.game.common.map.occupiable_station import OccupiableStation
+from bytele.game.common.map.station import Station
 from bytele.game.utils.vector import Vector
 from bytele.game.common.enums import *
 

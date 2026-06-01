@@ -1,6 +1,6 @@
 import unittest
 
-from bytele.game.fnaacm.timer import Timer
+from bytele.game.common.timer import Timer
 
 
 class TestTimer(unittest.TestCase):

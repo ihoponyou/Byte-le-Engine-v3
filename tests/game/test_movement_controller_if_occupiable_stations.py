@@ -6,7 +6,7 @@ from bytele.game.common.game_object import GameObject
 from bytele.game.common.map.game_board import GameBoard
 from bytele.game.common.map.wall import Wall
 from bytele.game.common.player import Player
-from bytele.game.common.stations.occupiable_station import OccupiableStation
+from bytele.game.common.map.occupiable_station import OccupiableStation
 from bytele.game.controllers.movement_controller import MovementController
 from bytele.game.utils.vector import Vector
 

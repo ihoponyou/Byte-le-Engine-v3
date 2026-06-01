@@ -4,7 +4,6 @@ from bytele.game.common.avatar import Avatar
 from bytele.game.common.enums import *
 from bytele.game.client.user_client import UserClient
 from bytele.game.common.map.game_board import GameBoard
-from bytele.game.common.stations.refuge import Refuge
 
 
 class Player(GameObject):

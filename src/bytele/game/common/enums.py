@@ -32,29 +32,8 @@ class ObjectType(Enum):
     STATION_RECEIVER_EXAMPLE = auto()
     OCCUPIABLE_STATION_EXAMPLE = auto()
     GAME_OBJECT_CONTAINER = auto()
-    GENERATOR = auto()
-    SCRAP = auto()
-    SCRAP_SPAWNER = auto()
-    VENT = auto()
-    BATTERY_SPAWNER = auto()
-    REFUGE = auto()
-    DOOR = auto()
-    BOT = auto()
     COIN_SPAWNER = auto()
-    CRAWLER_BOT = auto()
-    DUMB_BOT = auto()
-    IAN_BOT = auto()
-    JUMPER_BOT = auto()
-    SUPPORT_BOT = auto()
-
-BOT_OBJECT_TYPES = {
-    ObjectType.BOT,
-    ObjectType.CRAWLER_BOT,
-    ObjectType.DUMB_BOT,
-    ObjectType.IAN_BOT,
-    ObjectType.JUMPER_BOT,
-    ObjectType.SUPPORT_BOT,
-}
+    DOOR = auto()
 
 class ActionType(Enum):
     NONE = auto()

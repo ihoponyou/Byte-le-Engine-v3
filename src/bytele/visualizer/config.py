@@ -1,5 +1,11 @@
+from pathlib import Path
+
 from bytele.game.utils.vector import Vector
 
+
+PATH_TO_ASSETS = Path.cwd() / 'assets'
+PATH_TO_STATICSPRITES = PATH_TO_ASSETS / Path('images/staticsprites')
+PATH_TO_SPRITESHEETS = PATH_TO_ASSETS / Path('images/spritesheets')
 
 class Config:
     """

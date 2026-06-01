@@ -1,7 +1,7 @@
 from typing import Self, override
 from warnings import deprecated
 from bytele.game.common.game_object import GameObject
-from bytele.game.fnaacm.timer import Timer
+from bytele.game.common.timer import Timer
 
 @deprecated(f'use Timer instead')
 class Cooldown(GameObject):

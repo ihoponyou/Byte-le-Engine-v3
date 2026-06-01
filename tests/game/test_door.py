@@ -9,9 +9,9 @@ from bytele.game.common.player import Player
 from bytele.game.controllers.movement_controller import MovementController
 from bytele.game.controllers.interact_controller import InteractController
 from bytele.game.utils.vector import Vector
-from bytele.game.fnaacm.items.scrap import Scrap
-from bytele.game.fnaacm.map.door import Door
-from bytele.game.fnaacm.stations.generator import Generator
+from bytele.game.common.items.scrap import Scrap
+from bytele.game.common.map.door import Door
+from bytele.game.common.map.generator import Generator
 
 """
 Since bots don't exist in this branch, we're only testing the Player functionality with the door class.

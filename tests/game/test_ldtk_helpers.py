@@ -3,20 +3,15 @@ import unittest
 from bytele.game.common.map.game_board import GameBoard
 from bytele.game.common.map.wall import Wall
 from bytele.game.config import PATH_TO_LDTK_PROJECT, USE_PRECOMPILED_MAP, LDtk
-from bytele.game.fnaacm.map.door import Door
-from bytele.game.fnaacm.map.vent import Vent
-from bytele.game.fnaacm.stations.scrap_spawner import ScrapSpawner
-from bytele.game.fnaacm.stations.battery_spawner import BatterySpawner
-from bytele.game.fnaacm.map.coin_spawner import CoinSpawner
-from bytele.game.fnaacm.stations.generator import Generator
-from bytele.game.common.stations.refuge import Refuge
-from bytele.game.utils.ldtk_helpers import map_data_from_ldtk_file
+from bytele.game.common.map.door import Door
+from bytele.game.common.map.battery_spawner import BatterySpawner
+from bytele.game.common.ldtk_helpers import map_data_from_ldtk_file
 from bytele.game.utils.vector import Vector
 
 
 EXPECTED_MAP_SIZE = Vector(8, 8)
 EXPECTED_TOTAL_INSTANCES = 15
-TYPES_WITHOUT_DATA = {Wall, Vent}
+TYPES_WITHOUT_DATA = {Wall, }
 
 assert not USE_PRECOMPILED_MAP, \
     f'PATH_TO_LDTK_PROJECT is incorrect when USE_PRECOMPILED_MAP is true, ' \

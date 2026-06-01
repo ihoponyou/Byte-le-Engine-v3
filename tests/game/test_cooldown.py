@@ -1,7 +1,7 @@
 
 import unittest
 
-from bytele.game.fnaacm.cooldown import Cooldown
+from bytele.game.common.cooldown import Cooldown
 
 
 class TestCooldown(unittest.TestCase):

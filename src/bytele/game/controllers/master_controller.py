@@ -1,30 +1,11 @@
 from copy import deepcopy
-from dataclasses import dataclass
 import dataclasses
 import random
 
-from bytele.game.common.action import Action
 from bytele.game.common.avatar import Avatar
 from bytele.game.common.enums import *
 from bytele.game.common.player import Player
-import bytele.game.config as config   # this is for turns
-from bytele.game.common.stations.refuge import Refuge
-from bytele.game.controllers import refuge_controller
-from bytele.game.controllers.attack_controller import Attack_Controller
-from bytele.game.controllers.boosting_controller import BoostingController
-from bytele.game.controllers.bot_movement_controller import BotMovementController
-from bytele.game.controllers.bot_vision_controller import BotVisionController
 from bytele.game.controllers.point_controller import PointController, PointData
-from bytele.game.controllers.power_controller import PowerController
-from bytele.game.controllers.refuge_controller import RefugeController
-from bytele.game.fnaacm.bots.bot import Bot
-from bytele.game.fnaacm.bots.crawler_bot import CrawlerBot
-from bytele.game.fnaacm.bots.dumb_bot import DumbBot
-from bytele.game.fnaacm.bots.ian_bot import IANBot
-from bytele.game.fnaacm.bots.jumper_bot import JumperBot
-from bytele.game.fnaacm.bots.support_bot import SupportBot
-from bytele.game.fnaacm.timer import Timer
-from bytele.game.utils.thread import CommunicationThread
 from bytele.game.controllers.movement_controller import MovementController
 from bytele.game.controllers.controller import Controller
 from bytele.game.controllers.interact_controller import InteractController
@@ -72,16 +53,8 @@ class MasterController(Controller):
         self.current_world_data: dict = None
         self.movement_controller: MovementController = MovementController()
         self.interact_controller: InteractController = InteractController()
-        self.bot_movement_controller: BotMovementController = BotMovementController()
-        self.bot_vision_controller: BotVisionController = BotVisionController()
-        self.bot_attack_controller: Attack_Controller = Attack_Controller()
-        self.bots: dict[ObjectType, Bot] = {}
-        self.refuge_controller: RefugeController = RefugeController()
         self.point_controller: PointController = PointController()
-        self.power_controller: PowerController = PowerController()
         self.point_data = PointData()
-        self.boosting_controller: BoostingController = BoostingController()
-        self.support_bot = SupportBot()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict):
@@ -115,12 +88,6 @@ class MasterController(Controller):
 
         # cache references to every bot
         gb: GameBoard = world['game_board']
-        for obj_type in BOT_OBJECT_TYPES:
-            if obj_type == ObjectType.BOT:
-                continue
-            # FIXME: just look at it
-            game_objects = list(gb.get_objects(obj_type).values())[0]
-            self.bots[obj_type] = game_objects[0]
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
     def client_turn_arguments(self, client: Player, turn):
@@ -141,10 +108,6 @@ class MasterController(Controller):
 
         game_board: GameBoard = self.current_world_data["game_board"]
 
-        for battery in game_board.battery_spawners:
-            battery.tick()
-        for scrap_spawner in game_board.scrap_spawners:
-            scrap_spawner.tick()
         for coin_spawner in game_board.coin_spawners:
             coin_spawner.tick()
 
@@ -155,47 +118,9 @@ class MasterController(Controller):
                     self.interact_controller.handle_actions(client.actions[i], client, game_board)
                 except IndexError:
                     pass
+
+            assert client.avatar is not None
             self.interact_controller.handle_implicit_interactions(client.avatar, game_board)
-
-        # pve game so only one client
-        player = clients[0]
-        assert player.avatar is not None
-
-        self.refuge_controller.handle_actions(ActionType.NONE, player, game_board)
-
-        support_bot: SupportBot | None = self.bots.get(ObjectType.SUPPORT_BOT)
-        assert support_bot is not None
-        assert isinstance(support_bot, SupportBot)
-        Bot.tick_global_stun()
-        for bot in self.bots.values():
-            #bot.stunned()
-
-
-            if isinstance(bot, SupportBot):
-                bot.tick()
-                self.support_bot = bot
-
-            self.boosting_controller.boosting(bot, self.support_bot)
-
-            self.bot_vision_controller.handle_actions(player.avatar, bot, game_board)
-
-            if bot.can_move(turn):
-                moves = self.bot_movement_controller.calc_next_moves(bot, player.avatar, game_board, turn)
-                assert not moves is None, f'{bot.__class__}\'s next move was... None?'
-                for move in moves:
-                    self.bot_movement_controller.handle_actions(move, bot, game_board, self.turn)
-
-            attack = self.bot_attack_controller.calculate_attack_action(bot, player.avatar)
-            self.bot_attack_controller.handle_actions(attack, player, game_board, bot, support_bot)
-
-            if not player.avatar.is_alive:
-                self.game_over = True
-                break
-
-        self.power_controller.handle_actions(ActionType.NONE, player, game_board)
-        if player.avatar.power <= 0:
-            self.game_over = True
-        self.point_data = self.point_controller.handle_actions(player.avatar, game_board)
 
         # checks event logic at the end of round
         # self.handle_events(clients)

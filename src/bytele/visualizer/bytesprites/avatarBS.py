@@ -5,6 +5,7 @@ from bytele.game.common.enums import ObjectType
 from bytele.visualizer.bytesprites.bytesprite import ByteSprite
 from bytele.game.utils.vector import Vector
 from bytele.visualizer.bytesprites.bytesprite_factory import ByteSpriteFactory
+from bytele.visualizer.config import PATH_TO_SPRITESHEETS
 
 
 class AvatarBS(ByteSpriteFactory):
@@ -18,6 +19,8 @@ class AvatarBS(ByteSpriteFactory):
     3 -> Moving Up
     4 -> Hurt / Attacked
     """
+
+    PATH_TO_SPRITE = PATH_TO_SPRITESHEETS / 'Player.png'
 
     @staticmethod
     def update(
@@ -49,7 +52,7 @@ class AvatarBS(ByteSpriteFactory):
     def create_bytesprite(screen: pyg.Surface) -> ByteSprite:
         return ByteSprite(
             screen,
-            os.path.join(os.getcwd(), 'visualizer/images/spritesheets/Player.png'),
+            str(AvatarBS.PATH_TO_SPRITE.resolve()),
             5,
             ObjectType.AVATAR.value,
             AvatarBS.update,
