@@ -1,18 +1,53 @@
 import argparse
 import sys
+import typer
 import warnings
+from typing import Annotated
 
 from bytele.__about__ import __version__ as VERSION
 from bytele.game.engine import Engine
-from bytele.game.utils.generate_game import generate
+from bytele.game.utils.generate_game import generate_new_map
 from bytele.server.client.client import Client
+from bytele.server.enums import e_TeamType, e_University
+from bytele.server.models.team_type import TeamType
+from bytele.server.models.university import University
 from bytele.visualizer.main import ByteVisualiser
 
 warnings.simplefilter('ignore')
 
 
-def app():
+app = typer.Typer(
+    context_settings={
+        "help_option_names": ["-h", "--help"]
+    },
+    pretty_exceptions_enable=False,
+    pretty_exceptions_short=False,
+    no_args_is_help=True,
+)
 
+@app.command(help="Generate/run/visualize a game", no_args_is_help=True)
+def game(
+    generate: Annotated[bool, typer.Option("-g", "--generate", help="Generate a new map?")] = False,
+    run: Annotated[bool, typer.Option("-r", "--run", help="Run a game?")] = False,
+    visualize: Annotated[bool, typer.Option("-v", "--visualize", help="Visualize the last game?")] = False,
+):
+    if generate:
+        generate_new_map()
+    if run:
+        Engine().loop()
+    if visualize:
+        ByteVisualiser().loop()
+
+@app.command(help="Register a new team")
+def register(
+    team_name: Annotated[str, typer.Option(help="Your desired team name", prompt=True)],
+    team_type: Annotated[e_TeamType, typer.Option(help="Your team type", prompt=True)],
+    university: Annotated[e_University, typer.Option(help="Your university", prompt=True)],
+):
+    Client(argparse.ArgumentParser()).register(team_name, team_type, university)
+
+@app.command(help="Use the legacy CLI")
+def old():
     # Setup Primary Parser
     par = argparse.ArgumentParser()
 
@@ -134,7 +169,7 @@ def app():
     # Generate game options
     if action in ['generate', 'g']:
         # a random seed is already generated in the method by default
-        generate(par_args.seed) if par_args.seed else generate()
+        generate_new_map(par_args.seed) if par_args.seed else generate_new_map()
 
     # Run game options
     elif action in ['run', 'r']:
@@ -161,12 +196,12 @@ def app():
         visualiser.loop()
 
     elif action in ['gen,run', 'gr']:
-        generate()
+        generate_new_map()
         engine = Engine(False)
         engine.loop()
 
     elif action in ['gen,run,vis', 'grv']:
-        generate()
+        generate_new_map()
         engine = Engine(False)
         engine.loop()
         visualiser = ByteVisualiser()

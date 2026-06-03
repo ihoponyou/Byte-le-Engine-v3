@@ -11,6 +11,8 @@ test the things that say they need to be tested
 use file dialog for submitting
 refactor to use https://pypi.org/project/typer/
 you can generate docs btw https://typer.tiangolo.com/tutorial/typer-command/?h=run command#generate-docs
+pass path to client as cli argument
+
 
 make bytesprite map a dict[vector, list[bytesprite]]
 use a z instead of s in class name xd
