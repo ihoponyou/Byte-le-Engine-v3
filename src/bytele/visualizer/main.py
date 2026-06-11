@@ -1,6 +1,7 @@
 import math
 import sys
 import os
+from warnings import warn
 import cv2
 import json
 from bytele.game.common.enums import ObjectType
@@ -506,6 +507,8 @@ class ByteVisualiser:
 
         # if first turn log doens't exist, this can cause problems; can find better way to fix this
         self.turn_logs: dict = logs_to_dict(self.logs)
+        if not self.turn_logs:
+            raise RuntimeError(f'could not find any turn logs in {self.logs}')
         self.bytesprite_factories = self.adapter.populate_bytesprite_factories()
         map_size: dict = self.turn_logs['turn_0001']['game_board']['map_size']
 

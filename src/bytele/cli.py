@@ -5,6 +5,8 @@ import warnings
 from typing import Annotated
 
 from bytele.__about__ import __version__ as VERSION
+from bytele.game import config
+from bytele.game.common.enums import DebugLevel
 from bytele.game.engine import Engine
 from bytele.game.utils.generate_game import generate_new_map
 from bytele.server.client.client import Client
@@ -25,18 +27,33 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
+DEBUG_LEVEL_HELP_MSG = ", ".join([f"{level.value} ({level.name})" for level in list(DebugLevel)])
+
 @app.command(help="Generate/run/visualize a game", no_args_is_help=True)
 def game(
-    generate: Annotated[bool, typer.Option("-g", "--generate", help="Generate a new map?")] = False,
-    run: Annotated[bool, typer.Option("-r", "--run", help="Run a game?")] = False,
-    visualize: Annotated[bool, typer.Option("-v", "--visualize", help="Visualize the last game?")] = False,
+    generate: Annotated[bool, typer.Option("-g", "--generate", help="Generate a map (previously generated map will be discarded)")] = False,
+    run: Annotated[bool, typer.Option("-r", "--run", help="Run a game (turn logs from previously ran games will be discarded)")] = False,
+    visualize: Annotated[bool, typer.Option("-v", "--visualize", help="Visualize the most recently ran game")] = False,
+    seed: Annotated[int | None, typer.Option("-s", "--seed", help="Seed to use when generating a map")] = None,
+    debug_level: Annotated[int, typer.Option("-d", "--debug-level", help=f"{DEBUG_LEVEL_HELP_MSG}")] = 1,
+    quiet_mode: Annotated[bool, typer.Option("-q", "--quiet", help="Runs your bot... quietly :) (turns per second is hidden)")] = False,
+    log_dir: Annotated[str | None, typer.Option("-l", "--log-path", help="Path to a directory containing turn logs to visualize")] = None,
+    end_time: Annotated[int, typer.Option("-e", "--end-time", help="Sets the time for how long the visualizer will pause on the results screen")] = 1,
+    skip_start: Annotated[bool, typer.Option("--skip-start", help="Skips the first screen of the visualizer to make viewing the game faster")] = False,
+    playback_speed: Annotated[float, typer.Option("--playback-speed", help="Playback speed of the visualizer (turns per second)", min=0.1)] = 1.0
 ):
     if generate:
-        generate_new_map()
+        if seed:
+            generate_new_map(seed=seed)
+        else:
+            generate_new_map()
+
     if run:
-        Engine().loop()
+        config.Debug.level = DebugLevel(debug_level)
+        Engine(quiet_mode=quiet_mode).loop()
+
     if visualize:
-        ByteVisualiser().loop()
+        ByteVisualiser(log_dir=log_dir, end_time=end_time, skip_start=skip_start).loop()
 
 @app.command(help="Register a new team")
 def register(

@@ -1,3 +1,7 @@
+use pydantic for ez serialization and type safety
+
+apply changes from 2026's refactor/visualizer-... and feat/timeout-arg branches
+
 make GameObject.from_json a classmethod?
 
 make client runner friendly to single client games
