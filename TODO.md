@@ -1,0 +1,88 @@
+- use pydantic for ez serialization and type safety
+- apply changes from 2026's refactor/visualizer-... and feat/timeout-arg branches
+- clean up LDtk
+
+# LDtk
+
+- no more map compiling
+
+# SERVER
+
+- make client runner friendly to single client games
+- remove use of “team manager”
+- unit tests for “*_runner” modules
+- visual feedback for when client_runner will run next; print “x seconds remaining until next external_runner is started” or tqdm thing
+- be able to change allowed modules while running clients
+- visualizer runner seems to skip some clients
+
+# CLI
+
+- test the things that say they need to be tested
+- use file dialog for submitting <!-- H no bruh -->
+- refactor to use https://pypi.org/project/typer/
+- you can generate docs btw https://typer.tiangolo.com/tutorial/typer-command/?h=run command#generate-docs
+- pass path to client as cli argument
+
+# VISUALIZER
+
+- make bytesprite map a dict[vector, list[bytesprite]]
+- use a z instead of s in class name xd
+- combine staticsprite/spritesheet folders
+- easier way to make sprites invisible
+  - currently switching to a transparent row in spritesheet
+- debug message banner built into the visualizer
+  - maybe something like swaynag:
+
+# ENGINE
+
+- check game over in Engine.loop, not in Engine.post_tick so that the loop can break if needed
+- only add as many players to self.clients as set by the config? would cover up if more than the set amount is copied to the client directory, but useful for locally running games with multiple client versions
+- handle if this part of load() fails (from_json): the with open as json file
+- look into loop() perf
+- big improvement by removing gameboard.locations from json
+- use asyncio for turn log stuff if perf is io-bound
+
+# MASTER CONTROLLER
+
+- dont call turn logic if game is over?
+- maybe refactor master controller "current world data"
+  - seems like a dict that only stores a reference to gameboard
+  - maybe upgrade it to a dataclass that can be modified (and maintained) easier
+
+# GAME BOARD
+
+- serialized vectors should use escaped double quotes so that it can be immediately (without replacing the single quotes) used by json.loads
+- use occupiable.can_be_occupied_by in is_occupiable if adding that to the engine
+- json is super bloated (mostly locations stuff)
+- does “locations” really need to be stored?
+- add variadic overload of get_objects; searches for multiple object types at the same time
+
+# VECTOR
+
+- use classmethods for methods that return a new vector
+- make “get positions overlapped” readable
+- does it really need to inherit gameobject?
+- disallow changing x/y values; return a new Vector instead?
+- also any usage of str(vector.to_json) should have escaped double quotes instead of single quotes so it can be parsed by json.loads
+- simplify vector json?
+
+# THREAD
+
+- typehint it
+
+# GAME OBJECT
+
+- make GameObject.from_json a classmethod?
+
+# OTHER
+
+- look at this PR https://github.com/acm-ndsu/Byte-le-2025/pull/46
+
+- eliminate unecessary "| None" types
+
+- write:
+  - gihub workflow guide
+  - playtesting guide
+  - docs guide; what to include & https://trello.com/c/qkC1ktNb/94-docs
+
+- address leftover TODOs/FIXMEs
